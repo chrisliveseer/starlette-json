@@ -5,7 +5,7 @@ Starlette json responses for various json serializers available in the python co
 
 ### Why:
 - Remove `ujson` dependency from core starlette package
-- Add adaptation for other serializers
+- Add adaptors for other serializers
 - Customize serializer rendering settings
 
 ## Requirements
@@ -19,9 +19,10 @@ $ pip install starlette-json
 
 ## Optional installs
 Install at least one of these:
-- [ ] [orjson](https://github.com/ijl/orjson) `pip install orjson`
-- [ ] [Ultrajson](https://github.com/esnme/ultrajson) `pip install ujson`
-- [ ] [Rapidjson](https://github.com/python-rapidjson/python-rapidjson) `pip install python-rapidjson`
+- [orjson](https://github.com/ijl/orjson) `pip install orjson`
+- [Ultrajson](https://github.com/esnme/ultrajson) `pip install ujson`
+- [Rapidjson](https://github.com/python-rapidjson/python-rapidjson) `pip install python-rapidjson`
+- [SimpleJson](https://github.com/simplejson/simplejson) `pip install simplejson`
 	
 ## Usage
 ### Basic
@@ -29,7 +30,7 @@ Install at least one of these:
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse
 
-from starlette_json import ORJsonResponse, UJsonResponse, RapidJsonResponse
+from starlette_json import ORJsonResponse, UJsonResponse, RapidJsonResponse, SimpleJsonResponse
 
 app = Starlette()
 data = {'Hello': 'World'}
@@ -49,6 +50,10 @@ def ujson():
 @app.route('/rapidjson')
 def rapidjson():
 	return RapidJsonResponse(data)
+	
+@app.route('/simplejson')
+def rapidjson():
+	return SimpleJsonResponse(data)
 ```
 
 ### Custom rendering options:
@@ -82,6 +87,16 @@ def ujson():
 @app.route('/rapidjson')
 def rapidjson():
 	return RapidJsonResponse(data, sort_keys=True, indent=4)
+	
+@app.route('/simplejson')
+def rapidjson():
+	return SimpleJsonResponse(
+		data,
+		skipkeys=False,
+		ensure_ascii=True,
+		check_circular=True,
+		allow_nan=True
+	)
 ```
 
 ## Contributing
@@ -89,5 +104,5 @@ PRs very welcome.
 [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ### Todo
-- [ ] Tests?
-- [ ] Figure out how to integrate custom json parser for `starlette.request`
+- Tests?
+- Figure out how to integrate custom json parser for `starlette.request`

@@ -21,7 +21,7 @@ valid_args = {
 	
 class RapidJsonResponse(Response):
 	'''
-	See available dump kwargs here
+	See available dumps kwargs here
 		https://python-rapidjson.readthedocs.io/en/latest/dumps.html
 	'''
 	media_type = "application/json"
