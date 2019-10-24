@@ -23,9 +23,10 @@ class UJsonResponse(Response):
 	
 	def __init__(self, *args, **kwargs):
 		self.render_args = {arg: v for arg,v in kwargs.items() if arg in valid_args}
+		base_args = {arg: v for arg,v in kwargs.items() if arg not in valid_args}
 		if 'ensure_ascii' not in self.render_args:
 			self.render_args['ensure_ascii'] = False
-		super(UJsonResponse, self).__init__(*args, **kwargs)
+		super(UJsonResponse, self).__init__(*args, **base_args)
 		
 	def render(self, content: typing.Any) -> bytes:
-		return dumps(content, **self.render_args).encode("utf-8")
+		return dumps(content, **self.render_args).encode('utf-8')

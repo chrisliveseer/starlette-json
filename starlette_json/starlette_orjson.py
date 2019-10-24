@@ -21,7 +21,8 @@ class ORJsonResponse(Response):
 	
 	def __init__(self, *args, **kwargs):
 		self.render_args = {arg: v for arg,v in kwargs.items() if arg in valid_args}
-		super(ORJsonResponse, self).__init__(*args, **kwargs)
+		base_args = {arg: v for arg,v in kwargs.items() if arg not in valid_args}
+		super(ORJsonResponse, self).__init__(*args, **base_args)
 		
 	def render(self, content: typing.Any,) -> bytes:
 		return dumps(content, **self.render_args)
