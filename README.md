@@ -23,9 +23,9 @@ Install at least one of these:
 - [Ultrajson](https://github.com/esnme/ultrajson) `pip install ujson`
 - [Rapidjson](https://github.com/python-rapidjson/python-rapidjson) `pip install python-rapidjson`
 - [SimpleJson](https://github.com/simplejson/simplejson) `pip install simplejson`
-	
+
 ## Usage
-### Basic
+### Response examples
 ```python
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse
@@ -36,27 +36,27 @@ app = Starlette()
 data = {'Hello': 'World'}
 
 @app.route('/json')
-def json():
+def json(request):
 	return JSONResponse(data)
-	
+
 @app.route('/orjson')
-def orjson():
+def orjson(request):
 	return ORJsonResponse(data)
-	
+
 @app.route('/ujson')
-def ujson():
+def ujson(request):
 	return UJsonResponse(data)
-	
+
 @app.route('/rapidjson')
-def rapidjson():
+def rapidjson(request):
 	return RapidJsonResponse(data)
-	
+
 @app.route('/simplejson')
-def rapidjson():
+def rapidjson(request):
 	return SimpleJsonResponse(data)
 ```
 
-### Custom rendering options:
+### Custom response rendering options:
 See the docs for the specific json serializer for available options
 
 ```python
@@ -68,28 +68,28 @@ app = Starlette()
 data = {'Hello': 'World'}
 
 @app.route('/orjson')
-def orjson():
+def orjson(request):
 	return ORJsonResponse(
-		data, 
-		default=lambda x: str(x), 
+		data,
+		default=lambda x: str(x),
 		option=orjson.OPT_STRICT_INTEGER | orjson.OPT_NAIVE_UTC
 	)
-	
+
 @app.route('/ujson')
-def ujson():
+def ujson(request):
 	return UJsonResponse(
-		data, 
-		encode_html_chars=True, 
-		ensure_ascii=False, 
+		data,
+		encode_html_chars=True,
+		ensure_ascii=False,
 		escape_forward_slashes=False
 	)
-	
+
 @app.route('/rapidjson')
-def rapidjson():
+def rapidjson(request):
 	return RapidJsonResponse(data, sort_keys=True, indent=4)
-	
+
 @app.route('/simplejson')
-def rapidjson():
+def rapidjson(request):
 	return SimpleJsonResponse(
 		data,
 		skipkeys=False,
@@ -99,10 +99,24 @@ def rapidjson():
 	)
 ```
 
+### Json request body parsing:
+```python
+from starlette.applications import Starlette
+from starlette_json import ORJsonMiddleware, ORJsonResponse
+
+app = Starlette()
+
+app.add_middleware(ORJsonMiddleware)
+
+@app.route('/orjson')
+def orjson(request):
+	body = await request.json() # Parsed with orjson
+	return ORJsonResponse({'message':'ok'})
+```
+
 ## Contributing
 PRs very welcome.
 [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ### Todo
 - Tests?
-- Figure out how to integrate custom json parser for `starlette.request`
