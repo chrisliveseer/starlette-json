@@ -42,7 +42,7 @@ setup(
 	],
 	python_requires=REQUIRES_PYTHON,
 	install_requires=['starlette'],
-	extra_requires=[
+	extra_require=[
 		'orjson',
 		'ujson',
 		'python-rapidjson'
