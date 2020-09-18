@@ -8,10 +8,8 @@ except ImportError:
 	loads = dumps = None
 
 async def rapidjson_loads(self) -> typing.Any:
-	print('00000')
 	if not hasattr(self, '_json'):
 		body = await self.body()
-		print(self.json_opts)
 		self._json = loads(body, **self.json_opts)
 	return self._json
 
@@ -19,7 +17,6 @@ class RapidJsonMiddleware(BaseHTTPMiddleware):
 	def __init__(self, app, **kwargs):
 		self.app = app
 		self.json_opts = kwargs
-		print(self.json_opts)
 		super(RapidJsonMiddleware, self).__init__(app)
 
 	async def dispatch(self, request, call_next):
