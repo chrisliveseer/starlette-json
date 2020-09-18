@@ -3,7 +3,7 @@ import os
 from setuptools import setup
 
 NAME = 'starlette_json'
-VERSION = '19.11.15'
+VERSION = '20.09.18'
 DESCRIPTION = 'Custom json serializers for the Starlette web framework.'
 URL = 'https://github.com/chrisliveseer/starlette-json'
 EMAIL = 'chris@liveseer.com'
